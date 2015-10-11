@@ -1,0 +1,21 @@
+{
+  "name": "posthtml-match-css-helper",
+  "version": "1.0.0",
+  "description": "A helper to expand CSS selctors into PostHTML matcher objects",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rasmusfl0e/posthtml-match-css-helper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rasmusfl0e/posthtml-match-css-helper/issues"
+  },
+  "author": {
+    "name": "rasmusfl0e",
+    "email": "rasmusfl0e@gmail.com"
+  },
+  "license": "ISC",
+  "peerDependencies": {
+  	"posthtml": "^0.5.0"
+  }
+}
