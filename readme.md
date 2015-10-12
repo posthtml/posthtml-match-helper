@@ -1,6 +1,6 @@
 # posthtml-match-helper
 
-> A helper to expand CSS selectors into PostHTML matcher objects
+> A helper to expand CSS selectors into [PostHTML](https://github.com/posthtml/posthtml) matcher objects
 
 Using the helper function supplied by this module you can turn simple CSS selectors into match objects that [posthtml match](https://github.com/posthtml/posthtml/blob/master/README.md#match-objectstringregexp-functionposthtmlnode-posthtmlnodestring) accepts.
 
