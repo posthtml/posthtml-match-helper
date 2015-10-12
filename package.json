@@ -2,6 +2,10 @@
   "name": "posthtml-match-helper",
   "version": "1.0.0",
   "description": "A helper to expand CSS selectors into PostHTML matcher objects",
+  "keywords": [
+    "posthtml",
+    "posthtml-helper"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
