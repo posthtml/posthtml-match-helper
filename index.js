@@ -43,7 +43,7 @@ function expandAttributes (attrs) {
 	attrs = attrs.slice(1, -1).split("][");
 	var attrObject = {};
 	var l = attrs.length;
-	var attrsMatch, name, operator, value;
+	var attrsMatch, name, operator, value, reg;
 
 	while (l--) {
 		attrsMatch = attrs[l].match(attributeReg);
@@ -58,34 +58,36 @@ function expandAttributes (attrs) {
 				switch (operator) {
 
 					case "~":
-						attrObject[name] = new RegExp("(?:^|\\s)" + value + "(?:\\s|$)");
+						reg = "(?:^|\\s)" + value + "(?:\\s|$)";
 						break;
 
 					case "|":
-						attrObject[name] = new RegExp("^" + value + "(?:-|$)");
+						reg = "^" + value + "(?:-|$)";
 						break;
 
 					case "^":
-						attrObject[name] = new RegExp("^" + value);
+						reg = "^" + value;
 						break;
 
 					case "$":
-						attrObject[name] = new RegExp(value + "$");
+						reg = value + "$";
 						break;
 
 					case "*":
-						attrObject[name] = new RegExp(value);
+						reg = value;
 						break;
 
 					case "!":
-						attrObject[name] = new RegExp("^((?!" + value + ")[\\s\\S])*$");
+						reg = "^((?!" + value + ")[\\s\\S])*$";
 						break;
 
 					default:
-						attrObject[name] = new RegExp("^" + value + "$");
+						reg = "^" + value + "$";
 						break;
 
 				}
+
+				attrObject[name] = new RegExp(reg);
 
 			}
 			else {
