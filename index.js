@@ -1,8 +1,12 @@
+var selectorReg = /^([^#\.\[]+)?(?:#([^\.\[]+))?(?:\.([^#\[]+))?((?:\[[^\]]+\])+)?$/;
+var attributeReg = /^([a-zA-Z0-9_-]*[^~|^$*!=])(?:([~|^$*!]?)=['"]?([^'"]*)['"]?)?$/;
+var splitReg = /\s*,\s*/;
+
 function expandMatcher (matcher) {
 
 	if (typeof matcher === "string") {
 
-		var match = matcher.match(/^([^#\.\[]+)?(?:#([^\.\[]+))?(?:\.([^#\[]+))?((?:\[[^\]]+\])+)?$/);
+		var match = matcher.match(selectorReg);
 
 		if (match) {
 			matcher = {};
@@ -34,7 +38,7 @@ function expandMatcher (matcher) {
 					var attrsMatch, name, operator, value;
 
 					while (l--) {
-						attrsMatch = attrs[l].match(/^([a-zA-Z0-9_-]*[^~|^$*!=])(?:([~|^$*!]?)=['"]?([^'"]*)['"]?)?$/);
+						attrsMatch = attrs[l].match(attributeReg);
 
 						if (attrsMatch) {
 							name = attrsMatch[1];
@@ -116,8 +120,8 @@ module.exports = function (matcher) {
 
 	if (typeof matcher === "string") {
 		
-		if (matcher.match(/\s*,\s*/)) {
-			matcher = matcher.split(/\s*,\s*/);
+		if (matcher.match(splitReg)) {
+			matcher = matcher.split(splitReg);
 		}
 		else {
 			return expandMatcher(matcher);
