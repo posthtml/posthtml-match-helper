@@ -19,73 +19,16 @@ function expandMatcher (matcher) {
 				matcher.tag = tag;
 			}
 
-			if (id || className || attrs) {
-				matcher.attrs = {};
+			matcher.attrs = (attrs) ? expandAttributes(attrs) : {};
 
-				if (id) {
-					matcher.attrs.id = id;
-				}
+			if (id) {
+				matcher.attrs.id = id;
+			}
 
-				if (className) {
-					matcher.attrs.class = new RegExp(getCombinations(className.split(".")).map(function(order){
-						return "(?:^|\\s)" + order.join("\\s(?:.*?\\s)?") + "(?:\\s|$)";
-					}).join("|"));
-				}
-
-				if (attrs) {
-					attrs = attrs.slice(1, -1).split("][");
-					var l = attrs.length;
-					var attrsMatch, name, operator, value;
-
-					while (l--) {
-						attrsMatch = attrs[l].match(attributeReg);
-
-						if (attrsMatch) {
-							name = attrsMatch[1];
-							operator = attrsMatch[2];
-							value = attrsMatch[3];
-
-							if (value) {
-
-								switch (operator) {
-
-									case "~":
-										matcher.attrs[name] = new RegExp("(?:^|\\s)" + value + "(?:\\s|$)");
-										break;
-
-									case "|":
-										matcher.attrs[name] = new RegExp("^" + value + "(?:-|$)");
-										break;
-
-									case "^":
-										matcher.attrs[name] = new RegExp("^" + value);
-										break;
-
-									case "$":
-										matcher.attrs[name] = new RegExp(value + "$");
-										break;
-
-									case "*":
-										matcher.attrs[name] = new RegExp(value);
-										break;
-
-									case "!":
-										matcher.attrs[name] = new RegExp("^((?!" + value + ")[\\s\\S])*$");
-										break;
-	
-									default:
-										matcher.attrs[name] = new RegExp("^" + value + "$");
-										break;
-
-								}
-
-							}
-							else {
-								matcher.attrs[name] = true;
-							}
-						}
-					}
-				}
+			if (className) {
+				matcher.attrs.class = new RegExp(getCombinations(className.split(".")).map(function(order){
+					return "(?:^|\\s)" + order.join("\\s(?:.*?\\s)?") + "(?:\\s|$)";
+				}).join("|"));
 			}
 		}
 		else {
@@ -94,6 +37,64 @@ function expandMatcher (matcher) {
 	}
 
 	return matcher;
+}
+
+function expandAttributes (attrs) {
+	attrs = attrs.slice(1, -1).split("][");
+	var attrObject = {};
+	var l = attrs.length;
+	var attrsMatch, name, operator, value;
+
+	while (l--) {
+		attrsMatch = attrs[l].match(attributeReg);
+
+		if (attrsMatch) {
+			name = attrsMatch[1];
+			operator = attrsMatch[2];
+			value = attrsMatch[3];
+
+			if (value) {
+
+				switch (operator) {
+
+					case "~":
+						attrObject[name] = new RegExp("(?:^|\\s)" + value + "(?:\\s|$)");
+						break;
+
+					case "|":
+						attrObject[name] = new RegExp("^" + value + "(?:-|$)");
+						break;
+
+					case "^":
+						attrObject[name] = new RegExp("^" + value);
+						break;
+
+					case "$":
+						attrObject[name] = new RegExp(value + "$");
+						break;
+
+					case "*":
+						attrObject[name] = new RegExp(value);
+						break;
+
+					case "!":
+						attrObject[name] = new RegExp("^((?!" + value + ")[\\s\\S])*$");
+						break;
+
+					default:
+						attrObject[name] = new RegExp("^" + value + "$");
+						break;
+
+				}
+
+			}
+			else {
+				attrObject[name] = true;
+			}
+		}
+	}
+	
+	return attrObject;
 }
 
 function getCombinations (values, subresult) {
@@ -119,7 +120,7 @@ function getCombinations (values, subresult) {
 module.exports = function (matcher) {
 
 	if (typeof matcher === "string") {
-		
+
 		if (matcher.match(splitReg)) {
 			matcher = matcher.split(splitReg);
 		}
