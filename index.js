@@ -39,60 +39,59 @@ function expandMatcher (matcher) {
 	return matcher;
 }
 
+function cssAttrToRegExp (value, operator) {
+	var reg;
+	
+	switch (operator) {
+
+		case "~":
+			reg = "(?:^|\\s)" + value + "(?:\\s|$)";
+			break;
+
+		case "|":
+			reg = "^" + value + "(?:-|$)";
+			break;
+
+		case "^":
+			reg = "^" + value;
+			break;
+
+		case "$":
+			reg = value + "$";
+			break;
+
+		case "*":
+			reg = value;
+			break;
+
+		case "!":
+			reg = "^((?!" + value + ")[\\s\\S])*$";
+			break;
+
+		default:
+			reg = "^" + value + "$";
+			break;
+
+	}
+
+	return new RegExp(reg);
+}
+
 function expandAttributes (attrs) {
 	attrs = attrs.slice(1, -1).split("][");
 	var attrObject = {};
 	var l = attrs.length;
-	var attrsMatch, name, operator, value, reg;
+	var attrMatch, name, operator, value;
 
 	while (l--) {
-		attrsMatch = attrs[l].match(attributeReg);
+		attrMatch = attrs[l].match(attributeReg);
 
-		if (attrsMatch) {
-			name = attrsMatch[1];
-			operator = attrsMatch[2];
-			value = attrsMatch[3];
+		if (attrMatch) {
+			name = attrMatch[1];
+			operator = attrMatch[2];
+			value = attrMatch[3];
 
-			if (value) {
-
-				switch (operator) {
-
-					case "~":
-						reg = "(?:^|\\s)" + value + "(?:\\s|$)";
-						break;
-
-					case "|":
-						reg = "^" + value + "(?:-|$)";
-						break;
-
-					case "^":
-						reg = "^" + value;
-						break;
-
-					case "$":
-						reg = value + "$";
-						break;
-
-					case "*":
-						reg = value;
-						break;
-
-					case "!":
-						reg = "^((?!" + value + ")[\\s\\S])*$";
-						break;
-
-					default:
-						reg = "^" + value + "$";
-						break;
-
-				}
-
-				attrObject[name] = new RegExp(reg);
-
-			}
-			else {
-				attrObject[name] = true;
-			}
+			attrObject[name] = (value) ? cssAttrToRegExp(value, operator) : true;
 		}
 	}
 	
