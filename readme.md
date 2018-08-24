@@ -11,7 +11,7 @@ Supported features:
 * Classes: `.foo` returns `{attrs: { class: /(?:^|\s)foo(?:\\s|$)/ }}`. Any number of classnames supported.
 * Attribute selectors: Any number of the standard [attribute selectors](https://developer.mozilla.org/en/docs/Web/CSS/Attribute_selectors) can be used<sup><a href="#attribute_selectors_footnote">1</a></sup> including the following non-standard:
    * `[attr!=value]`: Matches if the `attr` attribute value does not contain the `value`.
-* Multiple node selectors: `"div, section"` returns `[{tag: "div"}, {tag: "span"}]`.
+* Multiple node selectors: `"div, span"` returns `[{tag: "div"}, {tag: "span"}]`.
 
 **<sup><a name="attribute_selectors_footnote">1</a></sup>** Multiple attribute selectors for the same attribute are not supported (this includes mixing classnames and attribute selectors matching `class`).
 
