@@ -1,6 +1,6 @@
 {
   "name": "posthtml-match-helper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A helper to expand CSS selectors into PostHTML matcher objects",
   "keywords": [
     "posthtml",
