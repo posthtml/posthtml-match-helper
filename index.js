@@ -1,4 +1,4 @@
-var selectorReg = /^([^#\.\[]+)?(?:#([^\.\[]+))?(?:\.([^#\[]+))?((?:\[[^\]]+\])+)?$/;
+var selectorReg = /^([^#\.\[]+)?(?:#([^\.\[]+))?(?:\.([^#\[]+))?((?:\[[^\]]*\])+)?$/;
 var attributeReg = /^([a-zA-Z0-9_-]*[^~|^$*!=])(?:([~|^$*!]?)=['"]?([^'"]*)['"]?)?$/;
 var splitReg = /\s*,\s*/;
 
@@ -14,21 +14,31 @@ function expandMatcher (matcher) {
 			var id = match[2];
 			var className = match[3];
 			var attrs = match[4];
+			var attributes;
 
 			if (tag) {
 				matcher.tag = tag;
 			}
 
-			matcher.attrs = (attrs) ? expandAttributes(attrs) : {};
+			if (attrs) {
+				attributes = expandAttributes(attrs);
+			}
+			else if (id || className) {
+				attributes = {};
+			}
 
 			if (id) {
-				matcher.attrs.id = id;
+				attributes.id = id;
 			}
 
 			if (className) {
-				matcher.attrs.class = new RegExp(getCombinations(className.split(".")).map(function(order){
+				attributes.class = new RegExp(getCombinations(className.split(".")).map(function(order){
 					return "(?:^|\\s)" + order.join("\\s(?:.*?\\s)?") + "(?:\\s|$)";
 				}).join("|"));
+			}
+
+			if (attributes) {
+				matcher.attrs = attributes;
 			}
 		}
 		else {
@@ -41,7 +51,7 @@ function expandMatcher (matcher) {
 
 function cssAttrToRegExp (value, operator) {
 	var reg;
-	
+
 	switch (operator) {
 
 		case "~":
@@ -78,24 +88,27 @@ function cssAttrToRegExp (value, operator) {
 }
 
 function expandAttributes (attrs) {
-	attrs = attrs.slice(1, -1).split("][");
-	var attrObject = {};
-	var l = attrs.length;
-	var attrMatch, name, operator, value;
+	attrs = attrs.slice(1, -1);
+	if (attrs.length > 0) {
+		attrs = attrs.split("][");
+		var attrObject = {};
+		var l = attrs.length;
+		var attrMatch, name, operator, value;
 
-	while (l--) {
-		attrMatch = attrs[l].match(attributeReg);
+		while (l--) {
+			attrMatch = attrs[l].match(attributeReg);
 
-		if (attrMatch) {
-			name = attrMatch[1];
-			operator = attrMatch[2];
-			value = attrMatch[3];
+			if (attrMatch) {
+				name = attrMatch[1];
+				operator = attrMatch[2];
+				value = attrMatch[3];
 
-			attrObject[name] = (value) ? cssAttrToRegExp(value, operator) : true;
+				attrObject[name] = (value) ? cssAttrToRegExp(value, operator) : true;
+			}
 		}
+
+		return attrObject;
 	}
-	
-	return attrObject;
 }
 
 function getCombinations (values, subresult) {
@@ -103,7 +116,7 @@ function getCombinations (values, subresult) {
 
 	var result = [];
 
-	values.forEach(function (value, index) {
+	values.forEach(function (value) {
 		if (subresult.indexOf(value) < 0) {
 			var _subresult = subresult.concat([value]);
 			if (_subresult.length < values.length) {
