@@ -32,9 +32,11 @@ function expandMatcher (matcher) {
 			}
 
 			if (className) {
-				attributes.class = new RegExp(getCombinations(className.split(".")).map(function(order){
-					return "(?:^|\\s)" + order.join("\\s(?:.*?\\s)?") + "(?:\\s|$)";
-				}).join("|"));
+        try {
+          attributes.class = new RegExp(getCombinations(className.split(".")).map(function(order){
+            return "(?:^|\\s)" + order.join("\\s(?:.*?\\s)?") + "(?:\\s|$)";
+          }).join("|"));
+        } catch { }
 			}
 
 			if (attributes) {
