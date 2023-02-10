@@ -103,7 +103,11 @@ function expandAttributes (attrs) {
 				operator = attrMatch[2];
 				value = attrMatch[3];
 
-				attrObject[name] = (value) ? cssAttrToRegExp(value, operator) : true;
+				if (!value) {
+					value = true;
+				}
+
+				attrObject[name] = (operator) ? cssAttrToRegExp(value, operator) : value;
 			}
 		}
 

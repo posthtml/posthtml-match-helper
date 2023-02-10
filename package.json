@@ -16,11 +16,17 @@
     "url": "https://github.com/rasmusfl0e/posthtml-match-helper/issues"
   },
   "author": {
-    "name": "rasmusfl0e",
-    "email": "rasmusfl0e@gmail.com"
+    "name": "phloe",
+    "email": "mail@phloe.industries"
   },
   "license": "ISC",
   "peerDependencies": {
-  	"posthtml": ">=0.5.0"
+    "posthtml": ">=0.5.0"
+  },
+  "devDependencies": {
+    "ava": "^4.2.0"
+  },
+  "scripts": {
+    "test": "ava"
   }
 }
