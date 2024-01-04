@@ -108,3 +108,15 @@ test("Matcher with class notation and class as attribute - the former wins", t =
 	const expected = { attrs: { class: /(?:^|\s)foo(?:\s|$)/ } };
 	t.deepEqual(actual, expected);
 });
+
+test("Matcher with escaped class notation", t => {
+	const actual = match(".\\[display:none\\]");
+	const expected = { attrs: { class: /(?:^|\s)\[display:none\](?:\s|$)/ } };
+	t.deepEqual(actual, expected);
+});
+
+test("Matcher with escaped class notation and attribute", t => {
+	const actual = match(".\\[display:none\\][foo^=bar]");
+	const expected = { attrs: { class: /(?:^|\s)\[display:none\](?:\s|$)/, foo: /^bar/ } };
+	t.deepEqual(actual, expected);
+});
