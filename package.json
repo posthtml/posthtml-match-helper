@@ -1,6 +1,7 @@
 {
   "name": "posthtml-match-helper",
   "version": "1.0.3",
+  "license": "MIT",
   "description": "A helper to expand CSS selectors into PostHTML matcher objects",
   "keywords": [
     "posthtml",
@@ -22,7 +23,6 @@
     "name": "phloe",
     "email": "mail@phloe.industries"
   },
-  "license": "ISC",
   "peerDependencies": {
     "posthtml": ">=0.5.0"
   },
