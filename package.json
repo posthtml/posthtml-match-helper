@@ -6,8 +6,11 @@
     "posthtml",
     "posthtml-helper"
   ],
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/rasmusfl0e/posthtml-match-helper.git"
