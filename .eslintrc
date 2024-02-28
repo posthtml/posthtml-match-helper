@@ -6,7 +6,7 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "indent": [2, 2, {"SwitchCase": 1}],
-    "quotes": [2, "single"],
+    "quotes": [2, "double"],
     "linebreak-style": [2, "unix"],
     "camelcase": [2, {"properties": "always"}],
     "brace-style": [2, "1tbs", {"allowSingleLine": true}]
