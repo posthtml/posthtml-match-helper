@@ -1,20 +1,21 @@
-import {test, expect} from 'vitest'
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
 import match from '../lib/index.js'
 
 test("Matcher with tag name", () => {
-  expect(match("div")).toEqual({ tag: "div" });
+  assert.deepEqual(match("div"), { tag: "div" });
 });
 
 test("Matcher with id", () => {
-  expect(match("#waldo")).toEqual({ attrs: { id: "waldo" } });
+  assert.deepEqual(match("#waldo"), { attrs: { id: "waldo" } });
 });
 
 test("Matcher with one class", () => {
-  expect(match(".foo")).toEqual({ attrs: { class: /(?:^|\s)foo(?:\s|$)/ } });
+  assert.deepEqual(match(".foo"), { attrs: { class: /(?:^|\s)foo(?:\s|$)/ } });
 });
 
 test("Matcher with multiple classes", () => {
-  expect(match(".foo.bar.baz")).toEqual({
+  assert.deepEqual(match(".foo.bar.baz"), {
     attrs: {
       class: /(?:^|\s)foo\s(?:.*?\s)?bar\s(?:.*?\s)?baz(?:\s|$)|(?:^|\s)foo\s(?:.*?\s)?baz\s(?:.*?\s)?bar(?:\s|$)|(?:^|\s)bar\s(?:.*?\s)?foo\s(?:.*?\s)?baz(?:\s|$)|(?:^|\s)bar\s(?:.*?\s)?baz\s(?:.*?\s)?foo(?:\s|$)|(?:^|\s)baz\s(?:.*?\s)?foo\s(?:.*?\s)?bar(?:\s|$)|(?:^|\s)baz\s(?:.*?\s)?bar\s(?:.*?\s)?foo(?:\s|$)/
     }
@@ -22,65 +23,65 @@ test("Matcher with multiple classes", () => {
 });
 
 test("Matcher with tag name and id", () => {
-  expect(match("div#waldo")).toEqual({ tag: "div", attrs: { id: "waldo" } });
+  assert.deepEqual(match("div#waldo"), { tag: "div", attrs: { id: "waldo" } });
 });
 
 test("Matcher with tag name and class", () => {
-  expect(match("div.foo")).toEqual({ tag: "div", attrs: { class: /(?:^|\s)foo(?:\s|$)/ } });
+  assert.deepEqual(match("div.foo"), { tag: "div", attrs: { class: /(?:^|\s)foo(?:\s|$)/ } });
 });
 
 test("Matcher with tag name, id and class", () => {
-  expect(match("div#waldo.foo")).toEqual({ tag: "div", attrs: { id: "waldo", class: /(?:^|\s)foo(?:\s|$)/ } });
+  assert.deepEqual(match("div#waldo.foo"), { tag: "div", attrs: { id: "waldo", class: /(?:^|\s)foo(?:\s|$)/ } });
 });
 
 test("Matcher with id and class", () => {
-  expect(match("#waldo.foo")).toEqual({ attrs: { id: "waldo", class: /(?:^|\s)foo(?:\s|$)/ } });
+  assert.deepEqual(match("#waldo.foo"), { attrs: { id: "waldo", class: /(?:^|\s)foo(?:\s|$)/ } });
 });
 
 test("Matcher with attribute", () => {
-  expect(match("[qux]")).toEqual({ attrs: { qux: true } });
+  assert.deepEqual(match("[qux]"), { attrs: { qux: true } });
 });
 
 test("Matcher with attribute with exact match", () => {
-  expect(match("[qux=\"corge\"]")).toEqual({ attrs: { qux: "corge" } });
+  assert.deepEqual(match("[qux=\"corge\"]"), { attrs: { qux: "corge" } });
 });
 
 test("Matcher with attribute with whitespaced list matching", () => {
-  expect(match("[qux~=\"corge\"]")).toEqual({ attrs: { qux: /(?:^|\s)corge(?:\s|$)/ } });
+  assert.deepEqual(match("[qux~=\"corge\"]"), { attrs: { qux: /(?:^|\s)corge(?:\s|$)/ } });
 });
 
 test("Matcher with attribute with full match or followed by a dash", () => {
-  expect(match("[qux|=\"corge\"]")).toEqual({ attrs: { qux: /^corge(?:-|$)/ } });
+  assert.deepEqual(match("[qux|=\"corge\"]"), { attrs: { qux: /^corge(?:-|$)/ } });
 });
 
 test("Matcher with attribute with start match", () => {
-  expect(match("[qux^=\"corge\"]")).toEqual({ attrs: { qux: /^corge/ } });
+  assert.deepEqual(match("[qux^=\"corge\"]"), { attrs: { qux: /^corge/ } });
 });
 
 test("Matcher with attribute with end match", () => {
-  expect(match("[qux$=\"corge\"]")).toEqual({ attrs: { qux: /corge$/ } });
+  assert.deepEqual(match("[qux$=\"corge\"]"), { attrs: { qux: /corge$/ } });
 });
 
 test("Matcher with attribute that contains value", () => {
-  expect(match("[qux*=\"corge\"]")).toEqual({ attrs: { qux: /corge/ } });
+  assert.deepEqual(match("[qux*=\"corge\"]"), { attrs: { qux: /corge/ } });
 });
 
 test("Matcher with attribute that does not contain value", () => {
-  expect(match("[qux!=\"corge\"]")).toEqual({ attrs: { qux: /^((?!corge)[\s\S])*$/ } });
+  assert.deepEqual(match("[qux!=\"corge\"]"), { attrs: { qux: /^((?!corge)[\s\S])*$/ } });
 });
 
 test("Matcher with id notation and id as attribute - the former wins", () => {
-  expect(match("#waldo[id=\"fred\"]")).toEqual({ attrs: { id: "waldo" } });
+  assert.deepEqual(match("#waldo[id=\"fred\"]"), { attrs: { id: "waldo" } });
 });
 
 test("Matcher with class notation and class as attribute - the former wins", () => {
-  expect(match(".foo[class=\"baz\"]")).toEqual({ attrs: { class: /(?:^|\s)foo(?:\s|$)/ } });
+  assert.deepEqual(match(".foo[class=\"baz\"]"), { attrs: { class: /(?:^|\s)foo(?:\s|$)/ } });
 });
 
 test("Matcher with escaped class notation", () => {
-  expect(match(".\\[display:none\\]")).toEqual({ attrs: { class: /(?:^|\s)\[display:none\](?:\s|$)/ } });
+  assert.deepEqual(match(".\\[display:none\\]"), { attrs: { class: /(?:^|\s)\[display:none\](?:\s|$)/ } });
 });
 
 test("Matcher with escaped class notation and attribute", () => {
-  expect(match(".\\[display:none\\][foo^=bar]")).toEqual({ attrs: { class: /(?:^|\s)\[display:none\](?:\s|$)/, foo: /^bar/ } });
+  assert.deepEqual(match(".\\[display:none\\][foo^=bar]"), { attrs: { class: /(?:^|\s)\[display:none\](?:\s|$)/, foo: /^bar/ } });
 });
