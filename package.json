@@ -15,9 +15,16 @@
   "engines": {
     "node": ">=18"
   },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22"
+    }
+  },
   "scripts": {
-    "dev": "vitest",
-    "test": "vitest run --coverage",
+    "dev": "node --test --watch",
+    "test": "node --test",
+    "coverage": "node --test --experimental-test-coverage",
     "lint": "biome lint ./lib",
     "pretest": "npm run lint",
     "release": "npx np"
@@ -34,8 +41,6 @@
     "posthtml": "^0.16.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@vitest/coverage-v8": "^3.0.4",
-    "vitest": "^3.0.4"
+    "@biomejs/biome": "1.9.4"
   }
 }
