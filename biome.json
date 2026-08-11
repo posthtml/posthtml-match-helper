@@ -3,10 +3,7 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"preset": "recommended",
-			"style": {
-				"useTemplate": "off"
-			}
+			"preset": "recommended"
 		}
 	}
 }
