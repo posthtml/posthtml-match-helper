@@ -85,3 +85,19 @@ test("Matcher with escaped class notation", () => {
 test("Matcher with escaped class notation and attribute", () => {
   assert.deepEqual(match(".\\[display:none\\][foo^=bar]"), { attrs: { class: /(?:^|\s)\[display:none\](?:\s|$)/, foo: /^bar/ } });
 });
+
+test("Matcher with comma-separated class notation", () => {
+  assert.deepEqual(match(".foo, .bar"), [{ attrs: { class: /(?:^|\s)foo(?:\s|$)/ } }, { attrs: { class: /(?:^|\s)bar(?:\s|$)/ } }]);
+});
+
+test("Matcher with array of selectors", () => {
+  assert.deepEqual(match([".foo", ".bar"]), [{ attrs: { class: /(?:^|\s)foo(?:\s|$)/ } }, { attrs: { class: /(?:^|\s)bar(?:\s|$)/ } }]);
+});
+
+test("Matcher object is returned as-is", () => {
+  assert.deepEqual(match({ tag: "div", attrs: { id: "waldo" } }), { tag: "div", attrs: { id: "waldo" } });
+});
+
+test("Matcher with custom element tag name", () => {
+  assert.deepEqual(match("my-custom-element"), { tag: "my-custom-element" });
+});
